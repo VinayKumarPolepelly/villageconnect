@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.text-stroke-green {
+  -webkit-text-stroke: 2px #22c55e; /* 2px border with green color (#22c55e is Tailwind's green-500) */
+}

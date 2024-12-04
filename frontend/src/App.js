@@ -9,13 +9,16 @@ const AdminUsers = lazy(() => import("./components/Admin/AdminUsers"));
 const AdminAddAnnouncement = lazy(() =>
   import("./components/Admin/AdminAddAnouncement")
 );
-
 const UserLogin = lazy(() => import("./components/User/UserLogin"));
 const UserHomePage = lazy(() => import("./components/User/UserHomePage"));
 const UserRegister = lazy(() => import("./components/User/UserReg"));
 const UserVillageAnnouncements = lazy(() =>
   import("./components/User/UserVillageAnnouncements")
 );
+const UserComplaint = lazy(() => import("./components/User/UserComplaint"));
+const UserSchemes = lazy(() => import("./components/User/UserSchemes"));
+const UserServices = lazy(() => import("./components/User/UserServices"));
+const UserActivities = lazy(() => import("./components/User/UserActivities"));
 
 const Applayout = () => {
   return (
@@ -97,10 +100,42 @@ const appRouter = createBrowserRouter([
         ),
       },
       {
-        path: "/user/userVillageAnnouncements/",
+        path: "/userVillageAnnouncements/",
         element: (
           <Suspense>
             <UserVillageAnnouncements />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/complaints/",
+        element: (
+          <Suspense>
+            <UserComplaint />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/villageActivity/",
+        element: (
+          <Suspense>
+            <UserActivities />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/villageSchemes/",
+        element: (
+          <Suspense>
+            <UserSchemes />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/services",
+        element: (
+          <Suspense>
+            <UserServices />
           </Suspense>
         ),
       },

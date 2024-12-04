@@ -1,12 +1,11 @@
-import React from "react";
 import UserHeader from "./userHeader";
-const UserHomepage = () => {
+
+const UserComplains = () => {
   return (
     <div>
       <UserHeader />
-      home
+      <h1>Complaints</h1>
     </div>
   );
 };
-
-export default UserHomepage;
+export default UserComplains;

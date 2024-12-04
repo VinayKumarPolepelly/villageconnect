@@ -53,127 +53,135 @@ const UserReg = () => {
     <div>
       <Header />
       <ToastContainer />
-      <div className="p-6 flex justify-center">
-        <div className="w-7/12 mt-12 bg-green-50 shadow-2xl rounded-lg p-3">
-          <h2 className="text-green-800 ml-[-29px] font-bold text-xl mb-3 text-center ">
-            User Registration
-          </h2>
-          <form
-            className="flex flex-col"
-            onSubmit={handlesubmitform}
-            ref={formRef}
-          >
-            <div className="flex flex-row">
-              <div>
-                <label className="mb-1 ml-7 text-[16px]  text-green-800">
-                  Full Name:
-                </label>
-                <input
-                  className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                  type="text"
-                  placeholder="Enter your name"
-                  ref={username}
-                  required
-                />
-              </div>
-              <div className="mr-[84px]">
-                <label className="mb-1 text-[16px]  text-green-800">
-                  Email
-                </label>
-                <input
-                  className="mb-2 p-3  border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                  type="text"
-                  ref={email}
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
+      <div className="h-screen w-screen relative bg-cover bg-center bg-[url('https://res.cloudinary.com/drygl5o4k/image/upload/v1733333722/sodoskjiwdjq0xxpv1pj.png')]">
+        {/* Background Overlay */}
+        <div className="absolute inset-0 bg-black opacity-60"></div>
+
+        {/* Content Layer */}
+        <div className="relative ">
+          <div className="p-6 flex justify-center">
+            <div className="w-7/12 mt-12 bg-green-50 shadow-2xl rounded-lg p-3">
+              <h2 className="text-green-800 ml-[-29px] font-bold text-xl mb-3 text-center ">
+                User Registration
+              </h2>
+              <form
+                className="flex flex-col"
+                onSubmit={handlesubmitform}
+                ref={formRef}
+              >
+                <div className="flex flex-row">
+                  <div>
+                    <label className="mb-1 ml-7 text-[16px]  text-green-800">
+                      Full Name:
+                    </label>
+                    <input
+                      className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      type="text"
+                      placeholder="Enter your name"
+                      ref={username}
+                      required
+                    />
+                  </div>
+                  <div className="mr-[84px]">
+                    <label className="mb-1 text-[16px]  text-green-800">
+                      Email
+                    </label>
+                    <input
+                      className="mb-2 p-3  border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      type="text"
+                      ref={email}
+                      placeholder="Enter your email"
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-row">
+                  <div>
+                    <label className="mb-1 ml-7 text-[16px]  text-green-800">
+                      Mobile
+                    </label>
+                    <input
+                      type="tel"
+                      className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      placeholder="Enter your mobile number"
+                      ref={mobile}
+                      required
+                    />
+                  </div>
+                  <div className="mr-1">
+                    <label className="mb-1 ml-7 text-[16px]  text-green-800">
+                      Aadhar Number
+                    </label>
+                    <input
+                      type="tel"
+                      className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      placeholder="Enter your aadhar number"
+                      ref={aadhar}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-row">
+                  <div>
+                    <label className="mb-1 ml-7 text-[16px]  text-green-800">
+                      Username
+                    </label>
+                    <input
+                      type="text"
+                      className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      placeholder="create username"
+                      ref={username}
+                      required
+                    />
+                  </div>
+                  <div className="mr-[75px]">
+                    <label className="mb-1 ml-7 text-[16px]  text-green-800">
+                      Address
+                    </label>
+                    <input
+                      type="text"
+                      className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      ref={address}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="flex flex-row">
+                  <div>
+                    <label className="mb-1 ml-7 text-[16px]  text-green-800">
+                      Create Password
+                    </label>
+                    <input
+                      type="password"
+                      className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      name="password"
+                      required
+                    />
+                  </div>
+                  <div className="mr-[54px]">
+                    <label className="mb-1 ml-7 text-[16px]  text-green-800">
+                      Confirm Password:
+                    </label>
+                    <input
+                      type="password"
+                      className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      name="confirmPassword"
+                      ref={password}
+                      required
+                    />
+                  </div>
+                </div>
+                {error && (
+                  <div className="text-red-600 ml-5 text-center  w-[90%] mt-3 mb-[-25px] font-bold">
+                    <h2>{error}</h2>
+                  </div>
+                )}
+                <button className="p-2 mb-4 ml-[300px] mt-5 font-semibold text-lg w-[100px] ml-8 text-white bg-green-700 hover:bg-green-600 hover:shadow-lg  active:bg-green-700 rounded-lg">
+                  Register
+                </button>
+              </form>
             </div>
-            <div className="flex flex-row">
-              <div>
-                <label className="mb-1 ml-7 text-[16px]  text-green-800">
-                  Mobile
-                </label>
-                <input
-                  type="tel"
-                  className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                  placeholder="Enter your mobile number"
-                  ref={mobile}
-                  required
-                />
-              </div>
-              <div className="mr-1">
-                <label className="mb-1 ml-7 text-[16px]  text-green-800">
-                  Aadhar Number
-                </label>
-                <input
-                  type="tel"
-                  className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                  placeholder="Enter your aadhar number"
-                  ref={aadhar}
-                  required
-                />
-              </div>
-            </div>
-            <div className="flex flex-row">
-              <div>
-                <label className="mb-1 ml-7 text-[16px]  text-green-800">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                  placeholder="create username"
-                  ref={username}
-                  required
-                />
-              </div>
-              <div className="mr-[75px]">
-                <label className="mb-1 ml-7 text-[16px]  text-green-800">
-                  Address
-                </label>
-                <input
-                  type="text"
-                  className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                  ref={address}
-                  required
-                />
-              </div>
-            </div>
-            <div className="flex flex-row">
-              <div>
-                <label className="mb-1 ml-7 text-[16px]  text-green-800">
-                  Create Password
-                </label>
-                <input
-                  type="password"
-                  className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                  name="password"
-                  required
-                />
-              </div>
-              <div className="mr-[54px]">
-                <label className="mb-1 ml-7 text-[16px]  text-green-800">
-                  Confirm Password:
-                </label>
-                <input
-                  type="password"
-                  className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                  name="confirmPassword"
-                  ref={password}
-                  required
-                />
-              </div>
-            </div>
-            {error && (
-              <div className="text-red-600 ml-5 text-center  w-[90%] mt-3 mb-[-25px] font-bold">
-                <h2>{error}</h2>
-              </div>
-            )}
-            <button className="p-2 mb-4 ml-[300px] mt-5 font-semibold text-lg w-[100px] ml-8 text-white bg-green-700 hover:bg-green-600 hover:shadow-lg  active:bg-green-700 rounded-lg">
-              Register
-            </button>
-          </form>
+          </div>
         </div>
       </div>
     </div>

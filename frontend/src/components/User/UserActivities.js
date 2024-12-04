@@ -1,12 +1,11 @@
-import React from "react";
 import UserHeader from "./userHeader";
-const UserHomepage = () => {
+
+const UserActivities = () => {
   return (
     <div>
       <UserHeader />
-      home
+      <h1>Activies</h1>
     </div>
   );
 };
-
-export default UserHomepage;
+export default UserActivities;
