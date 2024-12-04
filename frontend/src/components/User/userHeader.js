@@ -44,22 +44,22 @@ const UserHeader = () => {
           </Link>
           <Link to="/userVillageAnnouncements/">
             <li className="text-white active:font-semibold link-underline link-underline-black">
-              Village Announcements
+              Announcements
             </li>
           </Link>
           <Link to="/complaints/">
             <li className="text-white active:font-semibold link-underline link-underline-black">
-              Complaint Management
+              Complaints
             </li>
           </Link>
           <Link to="/villageActivity">
             <li className="text-white active:font-semibold link-underline link-underline-black">
-              Village Activies
+              Activies
             </li>
           </Link>
           <Link to="/villageSchemes/">
             <li className="text-white active:font-semibold link-underline link-underline-black">
-              Village Schemes
+              Schemes
             </li>
           </Link>
           <Link to="/services/">
