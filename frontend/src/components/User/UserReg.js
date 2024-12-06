@@ -70,7 +70,7 @@ const UserReg = () => {
                 ref={formRef}
               >
                 <div className="flex flex-row">
-                  <div>
+                  <div className="flex flex-col">
                     <label className="mb-1 ml-7 text-[16px]  text-green-800">
                       Full Name:
                     </label>
@@ -82,17 +82,19 @@ const UserReg = () => {
                       required
                     />
                   </div>
-                  <div className="mr-[84px]">
-                    <label className="mb-1 text-[16px]  text-green-800">
-                      Email
-                    </label>
-                    <input
-                      className="mb-2 p-3  border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                      type="text"
-                      ref={email}
-                      placeholder="Enter your email"
-                      required
-                    />
+                  <div className="ml-[100px]">
+                    <div className="flex flex-col">
+                      <label className="mb-1 text-[16px]  text-green-800">
+                        Email
+                      </label>
+                      <input
+                        className="mb-2 p-3  border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                        type="text"
+                        ref={email}
+                        placeholder="Enter your email"
+                        required
+                      />
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-row">
@@ -129,7 +131,7 @@ const UserReg = () => {
                     <input
                       type="text"
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
-                      placeholder="create username"
+                      placeholder="Create username"
                       ref={username}
                       required
                     />
@@ -141,6 +143,7 @@ const UserReg = () => {
                     <input
                       type="text"
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      placeholder="Enter your address"
                       ref={address}
                       required
                     />
@@ -154,6 +157,7 @@ const UserReg = () => {
                     <input
                       type="password"
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
+                      placeholder="Create password"
                       name="password"
                       required
                     />
@@ -166,6 +170,7 @@ const UserReg = () => {
                       type="password"
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
                       name="confirmPassword"
+                      placeholder="Re-enter password"
                       ref={password}
                       required
                     />

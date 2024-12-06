@@ -29,7 +29,7 @@ const UserHeader = () => {
   const [showItem, setShowItem] = useState(false);
 
   return (
-    <div className="sticky top-0">
+    <div className="sticky top-0  z-20 w-screen">
       <div className=" flex border-3 border bg-green-700 shadow-3xl rounded-b-2xl shadow-lg sticky ">
         <img
           src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl-KtVCNhRMNAhopfmJepp5xAX-RJsqMFJTA&s"

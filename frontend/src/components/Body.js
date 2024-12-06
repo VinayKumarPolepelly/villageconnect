@@ -5,7 +5,7 @@ const Body = () => {
   return (
     <div className="h-screen w-screen relative bg-cover bg-center bg-[url('https://res.cloudinary.com/drygl5o4k/image/upload/v1733333722/sodoskjiwdjq0xxpv1pj.png')]">
       {/* Background Overlay */}
-      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="absolute inset-0 bg-black opacity-60"></div>
 
       {/* Content Layer */}
       <div className=" ">
@@ -15,7 +15,7 @@ const Body = () => {
             initial={{ opacity: 0, y: -50 }} // Starting position (above and hidden)
             animate={{ opacity: 1, y: 0 }} // Ending position (centered and visible)
             transition={{ duration: 1 }} // Animation duration
-            className="text-6xl font-bold text-white text-stroke-green mb-5 mt-[80px]"
+            className="text-6xl  text-white  mb-5 mt-[80px]"
           >
             Village Connect
           </motion.h1>
