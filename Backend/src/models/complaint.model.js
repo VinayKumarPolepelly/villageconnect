@@ -1,11 +1,6 @@
 import mongoose, { Schema, model } from "mongoose";
-import { User } from "./user.model";
 const complaintSchema = new Schema(
   {
-    date: {
-      type: Date,
-      required: true,
-    },
     category: {
       type: String,
       required: true,
@@ -14,8 +9,9 @@ const complaintSchema = new Schema(
       type: String,
       required: true,
     },
-    image: {
-      type: String, // cloudinary
+    user: {
+      type: String,
+      required: true,
     },
     status: {
       type: String,
@@ -26,4 +22,4 @@ const complaintSchema = new Schema(
   { timestamps: true }
 );
 
-export const complaint = model("Complaint", complaintSchema);
+export const complaint = model("Complaints", complaintSchema);

@@ -41,7 +41,7 @@ const UserReg = () => {
     });
     const data2 = await response.json();
     if (response.ok === true) {
-      toast.success("Employee added successfully");
+      toast.success("Registered successfully");
       formRef.current.reset(); // Reset the form upon successful submission
     } else {
       if (error === "Network response was not ok") navigate("/");

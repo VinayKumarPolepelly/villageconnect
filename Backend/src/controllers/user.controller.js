@@ -3,7 +3,7 @@ import { User } from "../models/user.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
-
+import { complaint } from "../models/complaint.model.js";
 // Generate Tokens Function
 const generateTokens = async (userId) => {
   const userInstance = await User.findById(userId);
@@ -150,4 +150,24 @@ export const refreshAccessToken = asyncHandler(async (req, res) => {
   } catch (error) {
     throw new ApiError(401, "Invalid refresh token");
   }
+});
+
+export const addComplaint = asyncHandler(async (req, res) => {
+  const { category, description, status } = req.body;
+  const newComplaint = await complaint.create({
+    category,
+    description,
+    status,
+    user: req.user.username,
+  });
+  if (!newComplaint) throw new ApiError(500, "Internal server error");
+  return res.status(200).json({ complaint: newComplaint });
+});
+
+export const getComplaints = asyncHandler(async (req, res) => {
+  const username = req.user.username;
+  //console.log(userId);
+  const complaints = await complaint.find({ user: username });
+  if (!complaints) throw new ApiError(400, "leaves not found");
+  return res.status(200).json({ complaints: complaints });
 });
