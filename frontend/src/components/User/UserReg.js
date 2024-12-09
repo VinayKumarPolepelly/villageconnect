@@ -18,7 +18,7 @@ const UserReg = () => {
 
   const handlesubmitform = async (e) => {
     e.preventDefault();
-    const url = `${BASE_URL}/api/v1/admins/register`;
+    const url = `${BASE_URL}/api/v1/users/register`;
 
     const data = {
       username: username.current.value,

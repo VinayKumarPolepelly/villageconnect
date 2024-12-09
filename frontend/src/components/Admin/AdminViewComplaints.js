@@ -1,12 +1,13 @@
 import React from "react";
 import AdminHeader from "./AdminHeader";
-const AdminAddAnnouncement = () => {
+
+const AdminViewComplaints = () => {
   return (
     <div>
       <AdminHeader />
-      <h1>admin add Announcements</h1>
+      <h1>view comp</h1>;
     </div>
   );
 };
 
-export default AdminAddAnnouncement;
+export default AdminViewComplaints;

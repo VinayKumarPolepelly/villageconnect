@@ -4,43 +4,30 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
 
-const generateAccessTokenAndRefreshToken = async (userId) => {
-  try {
-    //console.log(userId);
-    const userInstance = await User.findById(userId);
-    //console.log(userInstance);
-    const accessToken = await userInstance.generateAccessToken();
-    const refreshToken = await userInstance.generateSessionToken();
-    userInstance.refreshToken = refreshToken;
-    userInstance.save({ validateBeforeSave: false });
-    return { accessToken, refreshToken };
-  } catch (error) {
-    throw new ApiError(400, "something went wrong while generating the tokens");
-  }
+// Generate Tokens Function
+const generateTokens = async (userId) => {
+  const userInstance = await User.findById(userId);
+  const accessToken = await userInstance.generateAccessToken();
+  const refreshToken = await userInstance.generateSessionToken();
+
+  userInstance.refreshToken = refreshToken;
+  await userInstance.save({ validateBeforeSave: false });
+
+  return { accessToken, refreshToken };
 };
 
-const registerUser = asyncHandler(async (req, res) => {
-  //get the input from the user or frontend
-  //validate the input
-  //check if the user is already exists
-  //create user object-create entry in db
-  //remove the password and refresh token feild form response
-  //check for user creation
-  //return response
-
+// Register User/Admin
+export const registerUser = asyncHandler(async (req, res) => {
   const { username, fullname, email, password, phoneNumber, role } = req.body;
-
   if (!fullname || !email || !username || !password || !phoneNumber || !role) {
-    throw new ApiError(400, "All feilds are required");
+    throw new ApiError(400, "All fields are required");
   }
+  console.log(password);
 
-  const existedUser = await User.findOne({
-    username,
-  });
-
-  if (existedUser) {
-    throw new ApiError(409, "User already exists");
-  }
+  // const existingUser = await User.findOne({ username });
+  // if (existingUser) {
+  //   throw new ApiError(409, "User already exists");
+  // }
 
   const newUser = await User.create({
     fullname,
@@ -50,58 +37,40 @@ const registerUser = asyncHandler(async (req, res) => {
     phoneNumber,
     role,
   });
+  console.log(password);
   const createdUser = await User.findById(newUser._id).select(
     "-password -refreshToken"
   );
 
   if (!createdUser) {
-    throw new ApiError(500, "something went wrong while registering the user");
+    throw new ApiError(500, "Error registering user");
   }
-  console.log(createdUser);
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, newUser, "user registered successfully"));
+  res
+    .status(201)
+    .json(new ApiResponse(201, createdUser, "User registered successfully"));
+
+  console.log(password);
 });
 
-// const registerUser = async (req, res, next) => {
-//   try {
-//     await res.status(200).json({
-//       message: "OK",
-//     });
-//   } catch (error) {
-//     console.log("error", error);
-//   }
-// };
-
-const loginUser = asyncHandler(async (req, res) => {
+// Login User/Admin
+export const loginUser = asyncHandler(async (req, res) => {
   const { username, password } = req.body;
 
-  if (!username) {
-    throw new ApiError(400, "username is required");
-  }
-  if (!password) {
-    throw new ApiError(400, "password is required");
+  if (!username || !password) {
+    throw new ApiError(400, "Username and password are required");
   }
 
-  const existedUser = await User.findOne({ username });
-  if (!existedUser) {
-    throw new ApiError(404, "you are not registered yet");
+  const user = await User.findOne({ username });
+  if (!user || !(await user.isPasswordCorrect(password))) {
+    throw new ApiError(401, "Invalid credentials");
   }
 
-  const isPasswordValid = await existedUser.isPasswordCorrect(password);
-  if (!isPasswordValid) {
-    throw new ApiError(404, "invalid user credentials");
-  }
-
-  const { accessToken, refreshToken } =
-    await generateAccessTokenAndRefreshToken(existedUser._id);
-
-  //const accessToken = existedUser.generateAccessToken();
+  const { accessToken, refreshToken } = await generateTokens(user._id);
 
   const options = {
     httpOnly: true,
-    secure: true, // Ensure this is true if using HTTPS
+    secure: true,
     sameSite: "None",
   };
 
@@ -112,65 +81,62 @@ const loginUser = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        { user: existedUser, accessToken },
-        "user logged in successfully"
+        { user: { ...user.toObject(), accessToken } },
+        "User logged in successfully"
       )
     );
 });
 
-const logoutUser = asyncHandler(async (req, res) => {
-  //console.log(req.user);
-  await User.findByIdAndUpdate(
-    req.user._id,
-    {
-      $set: { refreshToken: undefined },
-    },
-    {
-      new: true,
-    }
-  );
+// Logout User
+export const logoutUser = asyncHandler(async (req, res) => {
+  await User.findByIdAndUpdate(req.user._id, {
+    refreshToken: null,
+  });
+
   const options = {
     path: "/",
     secure: true,
     sameSite: "None",
   };
-  return res
+
+  res
     .status(200)
     .clearCookie("accessToken", options)
     .clearCookie("refreshToken", options)
     .json(new ApiResponse(200, {}, "User logged out successfully"));
-  // .json({
-  //   tokens: { accessToken, refreshToken },
-  // });
 });
 
-const refreshAccessToken = asyncHandler(async (req, res) => {
-  const incomingRefreshToken = req.cookies.refreshToken || req.body;
+// Refresh Access Token
+export const refreshAccessToken = asyncHandler(async (req, res) => {
+  const incomingRefreshToken =
+    req.cookies.refreshToken || req.body.refreshToken;
+
   if (!incomingRefreshToken) {
-    throw new ApiError(401, "unauthorized request");
+    throw new ApiError(401, "Unauthorized request");
   }
 
   try {
-    const decodedToken = jwt.verify(
+    const decoded = jwt.verify(
       incomingRefreshToken,
       process.env.REFRESH_TOKEN_SECRET
     );
+    const user = await User.findById(decoded._id);
 
-    const user = await User.findById(decodedToken?._id);
-    if (!user) {
-      throw new ApiError(401, "Invalid refresh token");
+    if (!user || user.refreshToken !== incomingRefreshToken) {
+      throw new ApiError(401, "Invalid or expired refresh token");
     }
 
-    if (incomingRefreshToken != user?.refreshToken) {
-      throw new ApiError(401, "Refresh Token is expired or used");
-    }
+    const { accessToken, refreshToken: newRefreshToken } = await generateTokens(
+      user._id
+    );
+
     const options = {
       httpOnly: true,
       secure: true,
+      sameSite: "None",
     };
-    const { accessToken, newRefreshToken } =
-      await generateAccessTokenAndRefreshToken(user?._id);
-    return res
+
+    res
       .status(200)
       .cookie("accessToken", accessToken, options)
       .cookie("refreshToken", newRefreshToken, options)
@@ -178,92 +144,10 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
         new ApiResponse(
           200,
           { accessToken, refreshToken: newRefreshToken },
-          "Access Token Refreshed"
+          "Access Token refreshed"
         )
       );
   } catch (error) {
-    throw new ApiError(401, error?.message || "Invalid Refresh Token");
+    throw new ApiError(401, "Invalid refresh token");
   }
 });
-
-// const addProjectReport = asyncHandler(async (req, res) => {
-//   const { project, report } = req.body;
-//   if (!project) throw new ApiError(400, "project is required");
-//   if (!report) throw new ApiError(400, "report is required");
-//   const newReport = await ProjectReport.create({
-//     report,
-//     project,
-//     user: req.user.username,
-//   });
-//   if (!newReport) throw new ApiError(500, "Internal server error");
-//   return res.status(200).json({ message: "report submitted successfully" });
-// });
-
-// const addLeaveReport = asyncHandler(async (req, res) => {
-//   const { fromDate, toDate, reason, status } = req.body;
-//   if (!fromDate) throw new ApiError(400, "From Date is a required field");
-//   if (!toDate) throw new ApiError(400, "From Date is a required field");
-//   if (!reason) throw new ApiError(400, "From Date is a required field");
-//   const newLeave = await LeaveReport.create({
-//     fromDate,
-//     toDate,
-//     reason,
-//     status,
-//     user: req.user.username,
-//   });
-//   if (!newLeave) throw new ApiError(500, "Internal server error");
-//   return res.status(200).json({ Leave: newLeave });
-// });
-
-// const getSalareeDetails = asyncHandler(async (req, res) => {
-//   //console.log("nikhil");
-//   const user = req.user;
-//   const username = user.username;
-//   //console.log(user);
-//   const salarees = await EmployeeSalary.find({ user: username });
-//   //console.log(salarees);
-//   if (!salarees) throw new ApiError(400, "salarees not found");
-//   return res.status(200).json({ salarees: salarees });
-// });
-
-// const getProjectDetails = async (req, res) => {
-//   try {
-//     const username = req.user.username;
-//     const projects = await Project.find({ projectManager: username });
-//     if (!projects) res.status(400).json({ message: "projects not found" });
-
-//     res.status(200).json({ projects: projects });
-//   } catch (error) {
-//     //console.log(error);
-//     res.status(400).json({ error });
-//   }
-// };
-
-// const getLeaveDetails = asyncHandler(async (req, res) => {
-//   const username = req.user.username;
-//   //console.log(userId);
-//   const leaves = await LeaveReport.find({ user: username });
-//   if (!leaves) throw new ApiError(400, "leaves not found");
-//   return res.status(200).json({ leaves: leaves });
-// });
-
-// const getProjectReportDetails = asyncHandler(async (req, res) => {
-//   const user = req.user;
-//   //console.log(userId);
-//   const reports = await ProjectReport.find({ user });
-//   if (!reports) throw new ApiError(400, "reports not found");
-//   return res.status(200).json({ reports: reports });
-// });
-
-// const getUserDetails = async (req, res) => {
-//   try {
-//     const { _id } = req.user;
-//     const user = await User.findById(_id);
-//     if (!user) return res.status(400).json({ message: "user not found" });
-//     return res.status(200).json({ user: user });
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message });
-//   }
-// };
-
-export { refreshAccessToken, loginUser, logoutUser, registerUser };

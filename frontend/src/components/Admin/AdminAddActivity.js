@@ -1,12 +1,13 @@
 import React from "react";
 import AdminHeader from "./AdminHeader";
-const AdminAddAnnouncement = () => {
+
+const AdminAddActivity = () => {
   return (
     <div>
       <AdminHeader />
-      <h1>admin add Announcements</h1>
+      <h1>AdminAddActivities</h1>;
     </div>
   );
 };
 
-export default AdminAddAnnouncement;
+export default AdminAddActivity;
