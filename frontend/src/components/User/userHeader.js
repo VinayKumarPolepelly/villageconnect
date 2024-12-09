@@ -14,7 +14,7 @@ const Logout = () => (
       <div className="ml-[46px] h-[65px] w-[65px] mt-[-6px] text-green-700 rounded-full border-solid border-green-600   border-4 p-1 cursor-pointer active:border-gray-400 ">
         <UserProfileIcon si={48} />
       </div>
-      <h1 className="mt-4 ml-1 mb-3">Vinay</h1>
+      <h1 className="mt-4 ml-1 mb-3">Vinay Kumar</h1>
       <button
         onClick=""
         className="text-sm text-white ml-1 border-2 p-[7px] bg-green-700 hover:bg-green-600 hover:shadow-lg active:bg-green-800 rounded-lg active:border-collapse active:font-semibold active:shadow-2xl"
