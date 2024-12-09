@@ -1,7 +1,7 @@
 import React from "react";
 
 const AdminLogin = () => {
-  return <h1>AdminLogin</h1>;
+  return <h1>Admin Login</h1>;
 };
 
 export default AdminLogin;

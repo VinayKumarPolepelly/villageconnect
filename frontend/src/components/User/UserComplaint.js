@@ -39,10 +39,10 @@ const UserComplaint = () => {
   };
 
   return (
-    <div>
+    <div className="bg-green-50 h-screen">
       <UserHeader />
       <div className="container mx-auto p-4 w-9/12">
-        <h1 className="text-2xl font-bold mb-4 text-green-700 text-center">
+        <h1 className="text-2xl font-bold mb-4 text-green-800 text-center">
           Village Complaint Management
         </h1>
         <button

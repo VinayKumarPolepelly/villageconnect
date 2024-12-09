@@ -14,6 +14,7 @@ const userSchema = new Schema(
     fullname: {
       type: String,
       required: true,
+      lowercase: true,
       index: true,
     },
     email: {
@@ -27,18 +28,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    address: {
+    phoneNumber: {
+      type: Number,
+      required: true,
+    },
+    role: {
       type: String,
-      required: true,
-      index: true,
-    },
-    aadhar: {
-      type: Number,
-      required: true,
-    },
-    mobile: {
-      type: Number,
-      required: true,
+      enum: ["user", "admin"],
+      default: "user",
     },
     refreshToken: {
       type: String,

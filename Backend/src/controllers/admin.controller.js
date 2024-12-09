@@ -1,7 +1,7 @@
 import { User } from "../models/user.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { asyncHandler } from "../utils/AsyncHandler.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
 
 const generateAccessTokenAndRefreshToken = async (userId) => {
   try {
@@ -84,45 +84,182 @@ const loginAdmin = asyncHandler(async (req, res) => {
     );
 });
 
-const registerAdmin = asyncHandler(async (req, res) => {
-  //get the input from the user or frontend
-  //validate the input
-  //check if the user is already exists
-  //create user object-create entry in db
-  //remove the password and refresh token feild form response
-  //check for user creation
-  //return response
+// const getEmployeesList = async (req, res) => {
+//   try {
+//     const users = await User.find();
+//     if (!users) res.status(400).json({ message: "employees not found" });
+//     return res.status(200).send(users);
+//   } catch (error) {
+//     res.status(400).json({ message: error });
+//   }
+// };
 
-  const { username, password } = req.body;
+// const addSalary = async (req, res) => {
+//   try {
+//     const { month, salaryAmount, user } = req.body;
+//     if (!salaryAmount)
+//       return res.status(400).json({ message: "salaryAmount is required" });
+//     const newSalary = await EmployeeSalary.create({
+//       month,
+//       user,
+//       salaryAmount,
+//     });
+//     if (!newSalary) {
+//       return res.status(500).json({ message: "Internal server error" });
+//     }
+//     return res.status(200).json({ salaree: newSalary });
+//   } catch (error) {
+//     return res.status(400).send(error);
+//   }
+// };
 
-  if (!fullname || !password) {
-    throw new ApiError(400, "All feilds are required");
-  }
+// const addProject = async (req, res) => {
+//   try {
+//     const {
+//       projectTitle,
+//       clientName,
+//       projectType,
+//       developingPlatform,
+//       databaseTechnology,
+//       projectDescription,
+//       projectManager,
+//     } = req.body;
+//     if (!projectTitle) {
+//       return res.status(400).json({ message: "project Name is required" });
+//     }
+//     if (!clientName) {
+//       return res.status(400).json({ message: "clientName is required" });
+//     }
+//     if (!projectType) {
+//       return res.status(400).json({ message: "projectType is required" });
+//     }
+//     if (!databaseTechnology) {
+//       return res
+//         .status(400)
+//         .json({ message: "databaseTechnology is required" });
+//     }
+//     if (!developingPlatform) {
+//       return res
+//         .status(400)
+//         .json({ message: "developingPlatform is required" });
+//     }
+//     if (!projectDescription) {
+//       return res
+//         .status(400)
+//         .json({ message: "projectDescription is required" });
+//     }
+//     if (!projectManager) {
+//       return res
+//         .status(400)
+//         .json({ message: "projectDescription is required" });
+//     }
+//     const newProject = await Project.create({
+//       projectTitle,
+//       clientName,
+//       projectType,
+//       developingPlatform,
+//       databaseTechnology,
+//       projectDescription,
+//       projectManager,
+//     });
+//     if (!newProject) {
+//       return res.status(400).json({ message: "Project could not be created" });
+//     }
 
-  const existedUser = await User.findOne({
-    username,
-  });
+//     // Send success response
+//     return res.status(200).json({ message: "Project created successfully" });
+//   } catch (error) {
+//     res.status(400).send(error);
+//   }
+// };
 
-  if (existedUser) {
-    throw new ApiError(409, "User already exists");
-  }
+// const updateLeaveReport = async (req, res) => {
+//   try {
+//     const { user, status, leaveId } = req.body;
+//     const leaves = await LeaveReport.findByIdAndUpdate(
+//       { _id: leaveId },
+//       { status: status }
+//     );
 
-  const newUser = await User.create({
-    username,
-    password,
-  });
-  const createdUser = await User.findById(newUser._id).select(
-    "-password -refreshToken"
-  );
+//     if (!leaves) throw new ApiError(400, "Leave Reports not found");
+//     return res.status(200).json({ LeaveReports: leaves });
+//   } catch (error) {
+//     // console.log("nikhil");
+//     res.status(400).json({ message: "something went wrong" });
+//   }
+// };
 
-  if (!createdUser) {
-    throw new ApiError(500, "something went wrong while registering the user");
-  }
-  // console.log(createdUser);
+// const deleteEmployee = async (req, res) => {
+//   try {
+//     const { username } = req.body;
+//     const instance = await User.findOneAndDelete({ username });
+//     if (!instance)
+//       return res.status(400).json({ message: "Something went wrong" });
+//     return res.status(200).json({ message: "Employee deleted successfully" });
+//   } catch (error) {
+//     return res.status(400).json({ message: error.message });
+//   }
+// };
 
-  return res
-    .status(200)
-    .json(new ApiResponse(200, newUser, "user registered successfully"));
-});
+// const deleteSalary = async (req, res) => {
+//   try {
+//     const { salaryId } = req.body;
+//     const instance = await EmployeeSalary.findByIdAndDelete({ _id: salaryId });
+//     if (!instance)
+//       return res.status(400).json({ message: "Something went wrong" });
+//     return res.status(200).json({ message: "Salary deleted successfully" });
+//   } catch (error) {
+//     return res.status(400).json({ message: error.message });
+//   }
+// };
 
-export { loginAdmin, registerAdmin };
+// const deleteProjectReport = async (req, res) => {
+//   try {
+//     const { reportId } = req.body;
+//     const instance = await ProjectReport.findByIdAndDelete({ _id: reportId });
+//     if (!instance)
+//       return res.status(400).json({ message: "Something went wrong" });
+//     return res.status(200).json({ message: "Report deleted successfully" });
+//   } catch (error) {
+//     return res.status(400).json({ message: error.message });
+//   }
+// };
+
+// const fetchSingleProject = async (req, res) => {
+//   try {
+//     const { projectId } = req.params;
+//     const project = await Project.findById(projectId);
+//     if (!project) return res.status(400).json({ message: "project not found" });
+//     return res.status(200).json({ project: project });
+//   } catch (error) {
+//     //console.log(error);
+//     return res.status(500).json({ message: error.message });
+//   }
+// };
+
+// const updateProjectDetails = async (req, res) => {
+//   const { projectId } = req.params;
+//   const updateData = req.body;
+
+//   try {
+//     // Find the project by ID and update with the provided data
+//     const updatedProject = await Project.findByIdAndUpdate(
+//       projectId,
+//       updateData,
+//       { new: true }
+//     );
+
+//     if (!updatedProject) {
+//       return res.status(404).json({ message: "Project not found" });
+//     }
+
+//     res.status(200).json({
+//       message: "Project updated successfully",
+//       project: updatedProject,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error updating project", error });
+//   }
+// };
+
+export { loginAdmin };

@@ -44,7 +44,7 @@ const UserHomepage = () => {
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
                 className="mt-[-50px] mr-10"
-                title="RGUKTLOGO"
+                title="BASAR Village"
               ></iframe>
             </div>
           </div>

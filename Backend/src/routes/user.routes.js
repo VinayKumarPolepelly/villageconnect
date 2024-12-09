@@ -1,5 +1,13 @@
 import { Router } from "express";
 import {
+  // addLeaveReport,
+  // addProjectReport,
+  // getLeaveDetails,
+  // getProjectDetails,
+  // getProjectReportDetails,
+  // getSalareeDetails,
+  // getUserDetails,
+  registerUser,
   loginUser,
   logoutUser,
   refreshAccessToken,
@@ -11,6 +19,7 @@ const router = Router();
 router.route("/login").post(loginRateLimit, loginUser);
 //secured routes
 router.route("/logout").post(verifyJwt, logoutUser);
+router.route("/register").post(registerUser);
 
 router.route("/refresh-token").post(refreshAccessToken);
 // router.route("/addProjectReport").post(verifyJwt, addProjectReport);

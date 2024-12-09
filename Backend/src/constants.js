@@ -1,1 +1,1 @@
-export const DB_NAME = "Village Connect";
+export const DB_NAME = "VillageConnect";

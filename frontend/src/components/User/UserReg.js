@@ -4,34 +4,33 @@ import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../helper";
 import { toast, ToastContainer } from "react-toastify"; // Import ToastContainer and toast
 import "react-toastify/dist/ReactToastify.css";
+
 const UserReg = () => {
   const [error, setError] = useState(null);
   const username = useRef();
   const fullname = useRef();
   const email = useRef();
   const password = useRef();
-  const mobile = useRef();
-  const address = useRef();
-  const aadhar = useRef();
+  const phoneNumber = useRef();
+  const role = useRef();
   const formRef = useRef(null); // Add a reference to the form element
   const navigate = useNavigate();
 
   const handlesubmitform = async (e) => {
     e.preventDefault();
-    const url = `${BASE_URL}/api/v1//userRegister`;
+    const url = `${BASE_URL}/api/v1/admins/register`;
 
     const data = {
       username: username.current.value,
       password: password.current.value,
       fullname: fullname.current.value,
       email: email.current.value,
-      mobile: mobile.current.value,
-      aadhar: aadhar.current.value,
-      address: address.current.value,
+      phoneNumber: phoneNumber.current.value,
+      role: role.current.value,
     };
 
     const userDetails = JSON.stringify(data);
-    console.log(userDetails);
+    //console.log(userDetails)
     const response = await fetch(url, {
       method: "POST",
       credentials: "include",
@@ -42,7 +41,7 @@ const UserReg = () => {
     });
     const data2 = await response.json();
     if (response.ok === true) {
-      toast.success("Registered successfully");
+      toast.success("Employee added successfully");
       formRef.current.reset(); // Reset the form upon successful submission
     } else {
       if (error === "Network response was not ok") navigate("/");
@@ -78,7 +77,7 @@ const UserReg = () => {
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
                       type="text"
                       placeholder="Enter your name"
-                      ref={username}
+                      ref={fullname}
                       required
                     />
                   </div>
@@ -106,7 +105,7 @@ const UserReg = () => {
                       type="tel"
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
                       placeholder="Enter your mobile number"
-                      ref={mobile}
+                      ref={phoneNumber}
                       required
                     />
                   </div>
@@ -118,7 +117,6 @@ const UserReg = () => {
                       type="tel"
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
                       placeholder="Enter your aadhar number"
-                      ref={aadhar}
                       required
                     />
                   </div>
@@ -138,13 +136,13 @@ const UserReg = () => {
                   </div>
                   <div className="mr-[75px]">
                     <label className="mb-1 ml-7 text-[16px]  text-green-800">
-                      Address
+                      Role
                     </label>
                     <input
                       type="text"
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
                       placeholder="Enter your address"
-                      ref={address}
+                      ref={role}
                       required
                     />
                   </div>
@@ -159,6 +157,7 @@ const UserReg = () => {
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
                       placeholder="Create password"
                       name="password"
+                      ref={password}
                       required
                     />
                   </div>
@@ -171,7 +170,6 @@ const UserReg = () => {
                       className="mb-2 p-3 ml-7 border-2 border-gray-500 text-md rounded-lg w-[18em]"
                       name="confirmPassword"
                       placeholder="Re-enter password"
-                      ref={password}
                       required
                     />
                   </div>
@@ -181,7 +179,7 @@ const UserReg = () => {
                     <h2>{error}</h2>
                   </div>
                 )}
-                <button className="p-2 mb-4 ml-[300px] mt-5 font-semibold text-lg w-[100px] ml-8 text-white bg-green-700 hover:bg-green-600 hover:shadow-lg  active:bg-green-700 rounded-lg">
+                <button className="p-2 mb-4 ml-[300px] mt-5 font-semibold text-lg w-[100px]  text-white bg-green-700 hover:bg-green-600 hover:shadow-lg  active:bg-green-700 rounded-lg">
                   Register
                 </button>
               </form>

@@ -9,7 +9,6 @@ const corsOptions = {
   origin: "http://localhost:3000", // Frontend domain
   credentials: true, // Allow credentials (cookies) to be sent
 };
-
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.static("public"));
